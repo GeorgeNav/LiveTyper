@@ -13,7 +13,7 @@ import React, { useState } from 'react'
 import { Typography } from '@material-ui/core'
 import LiveTyper from 'live-typer'
 
-const CoolComponent = () => {
+const AnimatedComponent = () => {
   const strings = [
     "Hello world",
     "Greatings friend",
@@ -21,13 +21,14 @@ const CoolComponent = () => {
   const [text, setText] = useState(strings[0])
 
   return <div>
-    <Typewriter
+    <LiveTyper
         text={text}
-        options={{
-          typeDelay: 50, // millisecond delay in typing characters on text prop change (defalut 50)
-          backspaceDelay: 15, // millisecond delay in deleting characters on text prop change (default 15)
-          cursor: false, // to show or not show animated cursor after last character (default false)
-          cursorBlinkSpeed: 250, // how fast the cursor blinks (default 250)
+        options={{ // include everything below
+          typeDelay: 50, // millisecond delay in typing characters on text prop change
+          backspaceDelay: 15, // millisecond delay in deleting characters on text prop change
+          cursor: true, // to show or not show animated cursor after last character
+          cursorBlinkSpeed: 250, // how fast the cursor blinks
+          cursorOpacity: 0.5, // how opac cursor is when flashing on
         }}
         wrapper={Typography}
         // any props you want to use with the wrapper component specified above
@@ -42,6 +43,30 @@ const CoolComponent = () => {
             ? strings[1]
             : strings[0])}>
     </button>
+  </div>
+}
+
+// Alternatively, wrap the component along with not passing anything into the wrapper prop.
+// This will return a fragment that contains a text string and cursor span element
+const AnimatedComponent = () => {
+  //...
+  return <div>
+    <Typography
+      variant='h4'
+      style={{
+        //...
+      }}/>
+      <LiveTyper
+          text={text}
+          options={{ // include everything below
+            typeDelay: 50, // millisecond delay in typing characters on text prop change
+            backspaceDelay: 15, // millisecond delay in deleting characters on text prop change
+            cursor: true, // to show or not show animated cursor after last character
+            cursorBlinkSpeed: 250, // how fast the cursor blinks
+            cursorOpacity: 0.5, // how opac cursor is when flashing on
+          }}/>
+    </Typography>
+    //...
   </div>
 }
 ```

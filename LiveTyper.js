@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, Fragment } from 'react'
 import PropTypes from 'prop-types'
 
 const ACTIONS = {
@@ -11,8 +11,9 @@ const LiveTyper = ({
   options = {
     typeDelay: 50, // milliseconds
     backspaceDelay: 15, // milliseconds
-    cursor: true,
+    cursor: true, // bool
     cursorBlinkSpeed: 350, // milliseconds
+    cursorOpacity: 0.5 // 0 - 1
   },
   wrapper,
   ...wrapperProps
@@ -74,11 +75,17 @@ const LiveTyper = ({
     setAction(ACTIONS.BACKSPACE)
   }, [text, setAction])
 
-  return <Wrapper
-    {...wrapperProps}>
-    {currentText}
-    <span ref={cursorRef}>|</span>
-  </Wrapper>
+  return wrapper
+    ? <Wrapper
+      {...wrapperProps}>
+      {currentText}
+      <span ref={cursorRef}>|</span>
+    </Wrapper>
+    : <Fragment>
+      {currentText}
+      <span ref={cursorRef}>|</span>
+    </Fragment>
+
 }
 
 LiveTyper.propTypes = {
@@ -88,6 +95,7 @@ LiveTyper.propTypes = {
     backspaceDelay: PropTypes.number,
     cursor: PropTypes.bool,
     cursorBlinkSpeed: PropTypes.number,
+    cursorOpacity: PropTypes.number,
   }),
   wrapper: PropTypes.oneOfType([
     PropTypes.func,
