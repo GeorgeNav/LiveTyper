@@ -1,6 +1,6 @@
 {
   "name": "live-typer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "LiveTyper.js",
   "scripts": {
@@ -22,6 +22,6 @@
     "react": "^17.0.2"
   },
   "devDependencies": {
-    "@babel/plugin-syntax-jsx": "^7.14.5"
+    "@babel/preset-react": "^7.14.5"
   }
 }
