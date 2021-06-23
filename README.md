@@ -1,14 +1,18 @@
-# What is this?
+# live-typer
 
-A simple react component that lets you use wrapper component to animate text changing by typing/deleting text change
+> Made with create-react-library
 
-# Installation
+[![NPM](https://img.shields.io/npm/v/live-typer.svg)](https://www.npmjs.com/package/live-typer) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-`npm i live-typer --save`
+## Install
 
-# How to use
+```bash
+npm install --save live-typer
+```
 
-```js
+## Usage
+
+```jsx
 import React, { useState } from 'react'
 import { Typography } from '@material-ui/core'
 import LiveTyper from 'live-typer'
@@ -70,3 +74,7 @@ const AnimatedComponent = () => {
   </div>
 }
 ```
+
+## License
+
+MIT © [GeorgeNav](https://github.com/GeorgeNav)
