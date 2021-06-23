@@ -4,6 +4,8 @@
 
 [![NPM](https://img.shields.io/npm/v/live-typer.svg)](https://www.npmjs.com/package/live-typer) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
+![Alt Text](./example.gif)
+
 ## Install
 
 ```bash
