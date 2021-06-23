@@ -1,8 +1,8 @@
 {
   "name": "live-typer",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "",
-  "main": "LiveTyper.js",
+  "main": "./src/LiveTyper.js",
   "scripts": {
     "build": "webpack"
   },
