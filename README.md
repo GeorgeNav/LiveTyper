@@ -57,14 +57,14 @@ const AnimatedComponent = () => {
         //...
       }}/>
       <LiveTyper
-          text={text}
-          options={{ // include everything below
-            typeDelay: 50, // millisecond delay in typing characters on text prop change
-            backspaceDelay: 15, // millisecond delay in deleting characters on text prop change
-            cursor: true, // to show or not show animated cursor after last character
-            cursorBlinkSpeed: 250, // how fast the cursor blinks
-            cursorOpacity: 0.5, // how opac cursor is when flashing on
-          }}/>
+        text={text}
+        options={{ // include everything below
+          typeDelay: 50, // millisecond delay in typing characters on text prop change
+          backspaceDelay: 15, // millisecond delay in deleting characters on text prop change
+          cursor: true, // to show or not show animated cursor after last character
+          cursorBlinkSpeed: 250, // how fast the cursor blinks
+          cursorOpacity: 0.5, // how opac cursor is when flashing on
+        }}/>
     </Typography>
     //...
   </div>
