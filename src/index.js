@@ -30,7 +30,7 @@ const LiveTyper = ({
       const interval = setInterval(
         () => {
           if(cursorOn)
-            cursorRef.current.style.opacity = 0.5
+            cursorRef.current.style.opacity = options.cursorOpacity
           else
             cursorRef.current.style.opacity = 0
           cursorOn = !cursorOn

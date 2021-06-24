@@ -22,7 +22,7 @@ import LiveTyper from 'live-typer'
 const AnimatedComponent = () => {
   const strings = [
     "Hello world",
-    "Greatings friend",
+    "Greetings friend",
   ]
   const [text, setText] = useState(strings[0])
 
