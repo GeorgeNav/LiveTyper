@@ -53,7 +53,7 @@ const AnimatedComponent = () => {
 }
 
 // Alternatively, wrap the component along with not passing anything into the wrapper prop.
-// This will return a fragment that contains a text string and cursor span element
+// This will return a span that wraps a span wrapped `text` and conditionally a span wrapped cursor `'|'`
 const AnimatedComponent = () => {
   //...
   return <div>
