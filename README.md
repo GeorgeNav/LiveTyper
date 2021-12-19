@@ -1,6 +1,6 @@
 # live-typer
 
-An animated way to display text `typing` style
+An animated way to display your text in a `typing` kind of style
 
 > Made with create-react-library
 
