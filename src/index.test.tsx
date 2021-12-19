@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import LiveTyper, { LiveTyperProps } from './index'
-import { act, render, waitFor } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import '@testing-library/dom'
 
 describe(LiveTyper.name, () => {
