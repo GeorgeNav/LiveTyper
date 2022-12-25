@@ -18,37 +18,37 @@ describe(LiveTyper.name, () => {
       expect(render(<LiveTyper text='something' />).queryByTestId('text')).not.toBeNull()
     })
     it('handles updates', async () => {
-      let curText = 'current text'
+      let text = 'current text'
       const typeDelay = 10
       const backspaceDelay = 15
       const props: LiveTyperProps = {
-        options: {
-          typeDelay,
-          backspaceDelay,
-        }
+        text,
+        typeDelay,
+        backspaceDelay,
       }
-      const element = render(<LiveTyper text={curText} {...props} />)
+      const element = render(<LiveTyper text={text} {...props} />)
       const updateProps = (props: LiveTyperProps) => render(<LiveTyper {...props} />, { container: element.container })
       await waitFor(() => {
-        expect(element.queryByTestId('text')?.innerHTML).toBe(curText)
+        console.log(element.queryByTestId('text')?.innerHTML)
+        expect(element.queryByTestId('text')?.innerHTML).toBe(text)
       })
 
-      const newText = 'new text'
+      text = 'new text'
       updateProps({
         ...props,
-        text: newText,
+        text,
       })
       await waitFor(() => {
-        expect(element.queryByTestId('text')?.innerHTML).toBe(newText)
+        expect(element.queryByTestId('text')?.innerHTML).toBe(text)
       })
 
-      const emptyText = ''
+      text = ''
       updateProps({
         ...props,
-        text: emptyText,
+        text: '',
       })
       await waitFor(() => {
-        expect(element.queryByTestId('text')?.innerHTML).toBe(emptyText)
+        expect(element.queryByTestId('text')?.innerHTML).toBe(text)
       })
     })
   })
@@ -56,8 +56,8 @@ describe(LiveTyper.name, () => {
     it('disable cursor', () => {
       const element = render(<LiveTyper
         text="test"
-        options={{
-          cursor: false,
+        cursor={{
+          enabled: false,
         }} />)
       const possibleCursor = element.queryByTestId('cursor')
       expect(possibleCursor).toBeNull()
@@ -65,8 +65,8 @@ describe(LiveTyper.name, () => {
     it('enable cursor', () => {
       const element = render(<LiveTyper
         text="test"
-        options={{
-          cursor: true,
+        cursor={{
+          enabled: true,
         }} />)
       const possibleCursor = element.queryByTestId('cursor')
       expect(possibleCursor).not.toBeNull()

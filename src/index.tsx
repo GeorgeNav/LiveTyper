@@ -5,41 +5,79 @@ const ACTIONS = {
   BACKSPACE: 'backspace',
 }
 
-export type LiveTyperOptions = {
-  /** delay in each key stroke (milliseconds) */
-  typeDelay: number,
-  /** delay in each backspace key stroke (milliseconds) */
-  backspaceDelay: number,
-  /** show cursor while typing */
-  cursor: boolean,
-  /** blink speed of cursor (milliseconds) */
-  cursorBlinkSpeed: number,
-  /** opacity value of cursor (0-1) */
-  cursorOpacity: number,
+export type Params = {
+  /** text to display */
+  text: string;
+  /** props for span */
+  props?: React.HTMLProps<HTMLSpanElement>,
 }
 
-/** fallback options */
-const fallbackOptions: LiveTyperOptions = {
-  typeDelay: 50, // milliseconds
-  backspaceDelay: 15, // milliseconds
-  cursor: true, // bool
-  cursorBlinkSpeed: 350, // milliseconds
-  cursorOpacity: 0.5 // 0 - 1
+export type TextParams = Params & {}
+
+export type CursorParams = Params & {
+  /** enable cursor or not */
+  enabled?: boolean,
+  /** blink speed of cursor (milliseconds) */
+  blinkSpeed?: number,
+  /** opacity of cursor to blink to (0.0-1.0) */
+  opacity?: number,
+}
+
+/** fallback text params */
+const fallbackText: TextParams = {
+  text: '',
+}
+
+/** fallback cursor params */
+const fallbackCursor: CursorParams = {
+  enabled: true,
+  text: '|',
+  blinkSpeed: 350, // milliseconds
+  opacity: 0.5 // 0 - 1
+}
+
+function is<T>(x: any): x is T {
+  return (x as T) !== undefined;
 }
 
 export type LiveTyperProps = {
-  text?: string;
-  options?: Partial<LiveTyperOptions>;
+  /** what to text to type out, or show and customize other things */
+  text?: string | Partial<TextParams>;
+  /** enable/disable `|` cursor while typing, show your own text as cursor, or show and customize other things */
+  cursor?: string | Partial<CursorParams>,
+  /** delay in each key stroke (milliseconds) */
+  typeDelay?: number;
+  /** delay in each backspace key stroke (milliseconds) */
+  backspaceDelay?: number;
   wrapper?: any; // TODO: find a better type for wrapper
   [x: string]: any; // TODO: somehow get wrapper
 }
 
 const LiveTyper = ({
-  text = '',
-  options = fallbackOptions,
+  text: startingText = fallbackText,
+  cursor: startingCursor = fallbackCursor,
+  typeDelay = 50,
+  backspaceDelay = 15,
   wrapper,
   ...wrapperProps
 }: LiveTyperProps) => {
+  const cursor: CursorParams = {
+    ...fallbackCursor,
+    ...typeof startingCursor === 'string'
+      ? { text: startingCursor }
+      : is<CursorParams>(startingCursor)
+        ? startingCursor
+        : {},
+  }
+  const text: TextParams = {
+    ...fallbackText,
+    ...typeof startingText === 'string'
+      ? { text: startingText }
+      : is<TextParams>(startingText)
+        ? startingText
+        : {},
+  }
+
   const index = useRef(-1)
   const cursorRef = useRef<HTMLDivElement>(document.createElement("span") as HTMLDivElement)
   const [action, setAction] = useState(ACTIONS.BACKSPACE)
@@ -47,17 +85,17 @@ const LiveTyper = ({
   const Wrapper = wrapper
 
   useEffect(() => {
-    if (options.cursor) {
+    if (cursor.enabled) {
       let cursorOn = true
       const interval = setInterval(
         () => {
           if (cursorOn)
-            cursorRef.current.style.opacity = `${options.cursorOpacity ?? fallbackOptions.cursorOpacity}`
+            cursorRef.current.style.opacity = `${cursor.opacity}`
           else
             cursorRef.current.style.opacity = `${0}`
           cursorOn = !cursorOn
         },
-        options.cursorBlinkSpeed ?? fallbackOptions.cursorBlinkSpeed)
+        cursor.blinkSpeed)
 
       return () => clearInterval(interval)
     } else
@@ -68,8 +106,8 @@ const LiveTyper = ({
     const timeoutId = setTimeout(
       () => {
         if (action === ACTIONS.TYPE) {
-          if (index.current <= text.length - 1) {
-            setCurrentText(text.slice(0, index.current + 1))
+          if (index.current <= text.text.length - 1) {
+            setCurrentText(text.text.slice(0, index.current + 1))
             index.current += 1
           }
         }
@@ -86,8 +124,8 @@ const LiveTyper = ({
         }
       },
       action === ACTIONS.TYPE
-        ? options.typeDelay ?? fallbackOptions.typeDelay
-        : options.backspaceDelay ?? fallbackOptions.backspaceDelay)
+        ? typeDelay
+        : backspaceDelay)
 
     return () => clearTimeout(timeoutId)
   }, [currentText, setCurrentText, action, setAction])
@@ -96,8 +134,17 @@ const LiveTyper = ({
     setAction(ACTIONS.BACKSPACE)
   }, [text, setAction])
 
-  const textSpan = <span data-testid='text'>{currentText}</span>
-  const cursorSpan = options.cursor && <span data-testid='cursor' ref={cursorRef}>|</span>
+  const textSpan = <span
+    {...text.props ? text.props : {}}
+    data-testid='text'>
+    {currentText}
+  </span>
+  const cursorSpan = cursor.enabled && <span
+    {...cursor.props ? cursor.props : {}}
+    data-testid='cursor'
+    ref={cursorRef}>
+    {cursor.text}
+  </span>
   const entireSpan = <span data-testid='text-and-cursor'>{textSpan}{cursorSpan}</span>
   return Wrapper
     ? <Wrapper
